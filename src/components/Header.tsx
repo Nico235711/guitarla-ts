@@ -1,4 +1,14 @@
-import { useCart } from "../hooks/useCart"
+import { CardItem, Guitar } from "../types"
+
+type HeaderProps = {
+  cart: CardItem[]
+  removeFromCart: (id: Guitar["id"]) => void
+  increaseQuantity: (id: Guitar["id"]) => void
+  decreaseQuantity: (id: Guitar["id"]) => void
+  cleanCart: () => void
+  isEmpty: boolean
+  cartTotal: number
+}
 
 const Header = ({
   cart,
@@ -8,8 +18,8 @@ const Header = ({
   cleanCart,
   isEmpty,
   cartTotal
-}) => {
-    
+}: HeaderProps) => {
+
   return (
     <header className="py-5 header">
       <div className="container-xl">

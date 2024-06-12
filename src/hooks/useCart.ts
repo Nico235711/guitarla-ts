@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { db } from "../data/db";
+import type { CardItem, Guitar } from "../types";
 
 export const useCart = () => {
 
-  const initialCart = () => { 
+  const initialCart = (): CardItem[] => { 
     const localStorageCart = localStorage.getItem("cart")
     return localStorageCart ? JSON.parse(localStorageCart) : []
   }
@@ -18,7 +19,7 @@ export const useCart = () => {
   const MAX_ITEMS = 5
   const MIN_ITEMS = 1
 
-  function addToCart(item) {
+  function addToCart(item: Guitar) {
     const itemExists = cart.findIndex(guitar => guitar.id === item.id)
     if (itemExists >= 0) { // si existe
       if (cart[itemExists].quantity >= MAX_ITEMS) return
@@ -28,16 +29,16 @@ export const useCart = () => {
 
     } else {
       // creo la propiedad de cantidad
-      const newItem = { ...item, quantity: 1 }
+      const newItem: CardItem = { ...item, quantity: 1 }
       setCart([...cart, newItem])
     }
   }
 
-  function removeFromCart(id) {
+  function removeFromCart(id: Guitar["id"]) {
     setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
   }
 
-  function increaseQuantity(id) {
+  function increaseQuantity(id: Guitar["id"]) {
     const updatedCart = cart.map(item => {
       if (item.id === id && item.quantity < MAX_ITEMS) { // si es el mismo y no supera la cantida máxima
         return { ...item, quantity: ++item.quantity }
@@ -48,7 +49,7 @@ export const useCart = () => {
     setCart(updatedCart)
   }
 
-  function decreaseQuantity(id) {
+  function decreaseQuantity(id: Guitar["id"]) {
     const updatedCart = cart.map(item => {
       if (item.id === id && item.quantity > MIN_ITEMS) { // si es el mismo y no supera la cantida máxima
         return { ...item, quantity: --item.quantity }
