@@ -1,6 +1,12 @@
+import type { Guitar } from "../types"
 
+// type separado
+type GuitarProps = {
+  guitar: Guitar
+  addToCart: (guitar: Guitar) => void
+}
 
-export default function Guitar({ guitar, addToCart }) {
+export default function Guitar({ guitar, addToCart }: GuitarProps) {
   const { price, description, image, name } = guitar
 
   return (

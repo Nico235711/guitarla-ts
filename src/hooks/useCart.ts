@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { db } from "../data/db";
+import { CartItem, Guitar } from "../types";
 
 const initialCart = () => {
   const localStorageCart = localStorage.getItem("cart")
@@ -10,7 +11,7 @@ export const useCart = () => {
 
   // state -> [variable, función modificadora]
   const [data] = useState(db)
-  const [cart, setCart] = useState(initialCart)
+  const [cart, setCart] = useState<CartItem[]>(initialCart)
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart))
@@ -20,7 +21,7 @@ export const useCart = () => {
   const MIN_ITEMS = 1
 
   // agrega al carrito
-  const addToCart = (item) => {
+  const addToCart = (item: Guitar) => {
     // reviso si el item ya existe en el arreglo
     const itemExists = cart.findIndex(guitar => guitar.id === item.id)
     if (itemExists >= 0) { // compruebo si existe y despues si la cantidad es menor a MAX_ITEMS
@@ -32,15 +33,16 @@ export const useCart = () => {
       }
 
     } else {
-      item.quantity = 1 // creo la propiedad
+      const newItem: CartItem = { ...item, quantity: 1 }
       setCart([
         ...cart, // tomo un copia para no perder la información previa
-        item
+        newItem
       ])
     }
   }
 
-  const removeFromCart = (id) => {
+  // uso el metodo lookup para extraer el id del item
+  const removeFromCart = (id: Guitar["id"]) => {
     // me retorna un array con los elementos cuyo id sea distinto al que recibo por parametro
     const updatedCart = cart.filter(guitar => guitar.id !== id)
     setCart(updatedCart)
@@ -50,7 +52,7 @@ export const useCart = () => {
     setCart([])
   }
 
-  const increaseQuantity = (id) => {
+  const increaseQuantity = (id: Guitar["id"]) => {
     const updatedCart = cart.map(item => {
       if (item.id === id && item.quantity < MAX_ITEMS) {
         return {
@@ -63,7 +65,7 @@ export const useCart = () => {
     setCart(updatedCart)
   }
 
-  const decreaseQuantity = (id) => {
+  const decreaseQuantity = (id: Guitar["id"]) => {
     const updatedCart = cart.map(item => {
       if (item.id === id && item.quantity > MIN_ITEMS) {
         return {
