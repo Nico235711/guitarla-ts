@@ -1,17 +1,8 @@
-# GuitarLA - React + TS
+# React + Vite
 
-Una página web de un carrito de compras de guitarras
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Tecnologías
+Currently, two official plugins are available:
 
-- HTML
-- CSS (BootStrap)
-- TS
-- React (TSX)
-- Vite
-
-## Conocimientos
-
-- Tipar las props
-- Crear un archivo para los tipos
-- Hooks y custom hooks
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
