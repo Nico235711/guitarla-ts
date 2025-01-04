@@ -1,50 +1,161 @@
-# React + TypeScript + Vite
+<h1>GuitarLA - Aprendiendo TypeScript</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## ¿Qué es TypeScript y sus ventajas?
+TypeScript es un lenguaje de programación desarrollado por Microsoft que extiende JavaScript añadiendo tipado estático. Esto significa que puedes definir los tipos de datos de tus variables, funciones, y otros elementos, permitiendo un desarrollo más robusto y mantenible.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Ventajas:
 
-## Expanding the ESLint configuration
+- **Tipado Estático**: Ayuda a prevenir errores durante el desarrollo.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Autocompletado**: Mejora la productividad gracias a un soporte más completo en los editores de código.
+- **Refactorización Segura**: Cambios en el código son más seguros y controlados.
+- **Compatibilidad con JavaScript**: Todo código TypeScript se compila a JavaScript.
+- **Mejor Documentación**: El tipado actúa como una forma de documentar el código.
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Primitive Types
+
+Los tipos primitivos son los más básicos en TypeScript y se utilizan para representar datos simples.
+
+- **string**: Representa texto.
+  ```ts
+  const name: string = "Guitarra";
+  ```
+- **number**: Representa números.
+  ```ts
+  const price: number = 100;
+  ```
+- **boolean**: Representa valores verdaderos o falsos.
+  ```ts
+  const isAvailable: boolean = true;
+  ```
+- **null** y **undefined**: Representan valores vacíos o no definidos.
+
+---
+
+## Types e Interfaces
+### Types
+Un type define un tipo personalizado en TypeScript.
+```ts
+type Guitar = {
+  id: string;
+  name: string;
+  price: number;
+};
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Interfaces
+Una interface también define la forma de un objeto pero permite extensión de otros tipos.
+```ts
+interface Guitar {
+  id: string;
+  name: string;
+  price: number;
+}
+```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Inline Type
+Puedes definir un tipo directamente dentro de una función o variable.
+```ts
+const getGuitar = (id: string): { id: string; name: string; price: number } => {
+  return { id, name: "Acústica", price: 200 };
+};
+```
+
+---
+
+## Type Separado
+Definir tipos separados ayuda a la reutilización y la claridad.
+```ts
+type Guitar = {
+  id: string;
+  name: string;
+  price: number;
+};
+
+const getGuitar = (id: string): Guitar => {
+  return { id, name: "Eléctrica", price: 300 };
+};
+```
+
+---
+
+## Creando un Archivo de Types ¿Dónde y cómo hacerlo?
+Se recomienda crear un archivo con extensión `.d.ts` o un archivo dedicado para los tipos, generalmente en una carpeta llamada `types` dentro del proyecto.
+
+1. **Ubicación**: \`src/types/\`
+2. **Nombre del archivo**: \`index.ts\`
+3. **Estructura del archivo**:
+```ts
+export type Guitar = {
+  id: string;
+  name: string;
+  price: number;
+};
+```
+Luego puedes importarlo en cualquier parte del proyecto:
+```ts
+import type { Guitar } from "../types";
+```
+
+---
+
+## Heredar y Extender un Type
+Puedes crear nuevos tipos basados en otros usando el operador `&` (intersección).
+```ts
+type Guitar = {
+  id: string;
+  name: string;
+};
+
+type ExtendedGuitar = Guitar & {
+  price: number;
+  isAvailable: boolean;
+};
+```
+
+---
+
+## Utility Types en TypeScript
+TypeScript proporciona tipos utilitarios para trabajar con tipos de manera más eficiente.
+
+- **Pick**: Selecciona un subconjunto de propiedades de un tipo.
+  ```ts
+  type GuitarSummary = Pick<Guitar, "id" | "name">;
+  ```
+
+- **Omit**: Excluye propiedades de un tipo.
+  ```ts
+  type GuitarWithoutPrice = Omit<Guitar, "price">;
+  ```
+
+- **Partial**: Convierte todas las propiedades en opcionales.
+  ```ts
+  type PartialGuitar = Partial<Guitar>;
+  ```
+
+- **Required**: Convierte todas las propiedades en obligatorias.
+  ```ts
+  type RequiredGuitar = Required<Guitar>;
+  ```
+
+---
+
+## Creando un Type para el ID de la guitarra (método lookup)
+Puedes crear un tipo que represente solo el ID de un objeto utilizando el operador de indexación.
+```ts
+type Guitar = {
+  id: string;
+  name: string;
+  price: number;
+};
+
+type GuitarID = Guitar["id"];
+
+const guitarId: GuitarID = "12345";
 ```
