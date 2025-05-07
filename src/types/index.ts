@@ -1,4 +1,3 @@
-
 export type GuitarItem = {
   id: number,
   name: string,
@@ -7,7 +6,7 @@ export type GuitarItem = {
   price: number,
 }
 
-// hereda del tipo GuitarItem
+// herencia de tipos
 export type CartItem = GuitarItem & {
   quantity: number
 }
